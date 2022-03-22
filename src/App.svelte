@@ -2,7 +2,7 @@
   import ActionPanel from "./components/ActionPanel.svelte";
   import Footer from "./components/Footer.svelte";
   import Header from "./components/Header.svelte";
-  import PosterPanel from "./components/PosterPanel.svelte";
+  import PosterPanel from "./components/PosterPanel/PosterPanel.svelte";
 
   export let name: string;
 </script>
