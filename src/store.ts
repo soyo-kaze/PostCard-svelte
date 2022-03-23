@@ -2,11 +2,9 @@ import { writable } from "svelte/store";
 
 export interface imgProp {
   imgSrc: string;
-  rotate: `${number}deg`;
+  rotate: number;
   scale: number;
-  key?: symbol;
-  opacity?: string;
-  maxWidth?: string;
+  key: symbol;
   active: boolean;
 }
 
@@ -14,8 +12,8 @@ let key = Symbol();
 
 export const switchCardInitialValue: imgProp = {
   imgSrc: "/assets/post.jpg",
-  rotate: "90deg",
-  scale: 0.55,
+  rotate: 0,
+  scale: 1,
   key,
   active: true,
 };

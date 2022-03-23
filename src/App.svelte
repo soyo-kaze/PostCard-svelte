@@ -1,10 +1,8 @@
 <script lang="ts">
-  import ActionPanel from "./components/ActionPanel.svelte";
+  import ActionPanel from "./components/ActionPanel/ActionPanel.svelte";
   import Footer from "./components/Footer.svelte";
   import Header from "./components/Header.svelte";
   import PosterPanel from "./components/PosterPanel/PosterPanel.svelte";
-
-  export let name: string;
 </script>
 
 <main>
@@ -33,6 +31,11 @@
     .container {
       flex-direction: column;
       padding: 10px;
+    }
+    main {
+      max-height: 100%;
+      min-height: 82vh;
+      height: 100%;
     }
   }
 </style>

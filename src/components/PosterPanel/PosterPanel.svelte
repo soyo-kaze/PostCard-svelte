@@ -15,17 +15,17 @@
 </script>
 
 <main class="container__poster">
-  {#key imgSrc}
+  {#key imgSrc.key}
     <div
       class="post__card"
       in:fly={{ y: -200, delay: 300 }}
       out:fly={{ y: 200, duration: 300 }}
     >
-      <img
-        src={imgSrc.imgSrc}
-        alt="PostCard"
-        style={`rotate:${imgSrc.rotate};scale:${imgSrc.scale}`}
-      />
+      <div
+        style={`rotate:${imgSrc.rotate}deg;scale:${imgSrc.scale};transition-duration:300ms`}
+      >
+        <img src={imgSrc.imgSrc} alt="PostCard" />
+      </div>
     </div>
   {/key}
   <div class="add__cards">
@@ -41,14 +41,6 @@
         on:click={(e) => handleCard(e, card)}
       />
     {/each}
-
-    <!--
-      Upload image section
-    -->
-    <form on:submit|preventDefault={(e) => handleUpload(e)}>
-      <input type="file" required accept="image/*" />
-      <button type="submit">Upload</button>
-    </form>
   </div>
 </main>
 
@@ -64,6 +56,7 @@
     width: 100%;
     background-color: rgba(135, 247, 210, 0.694);
     padding: 20px;
+    transition-duration: 300ms;
   }
   .post__card {
     margin: 10px;
@@ -75,7 +68,7 @@
     justify-content: center;
     align-items: center;
   }
-  .post__card > img {
+  .post__card > div > img {
     object-fit: contain;
     border-radius: 20px;
     max-width: 600px;
@@ -83,7 +76,7 @@
   }
   .add__cards {
     padding: 20px 0px 10px 0px;
-    border-top: 1px solid;
+    /* border-top: 1px solid; */
     width: 100%;
     display: flex;
     align-items: center;
@@ -101,12 +94,6 @@
   .active {
     opacity: 1;
     max-width: 120px;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    margin: 0px 10px 0px 10px;
-    max-width: 100px;
   }
   @media screen and (max-width: 750px) {
     .container__poster {

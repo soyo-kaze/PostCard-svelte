@@ -36,7 +36,7 @@ export const handleUpload = (e: Event): void => {
           ...e,
           {
             imgSrc: imgSrcInner,
-            rotate: "0deg",
+            rotate: 0,
             scale: 1,
             key,
             active: false,
