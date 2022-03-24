@@ -40,6 +40,8 @@ export const handleUpload = (e: Event): void => {
             scale: 1,
             key,
             active: false,
+            undoStack: [],
+            redoStack: [],
           },
         ]);
       },

@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { imgSrcStore } from "../../store";
-
+  import { imgProp, imgSrcStore, postCardStore } from "../../store";
   import { handleUpload } from "../PosterPanel/PosterPanel";
   import ActionButton from "./ActionButton.svelte";
-  import { rotatePoster, scalePoster } from "./Actions";
+  import { rotatePoster, scalePoster, undo } from "./Actions";
 
   /**
    * This function is to invoke `input[type=file]` tag since it's hidden behind the
@@ -46,6 +45,30 @@
     action={rotatePoster}
     key={$imgSrcStore.key}
   />
+  <div
+    class="btn"
+    style="margin: 10px;"
+    on:click={() =>
+      ($imgSrcStore.text = {
+        hidden: false,
+        data: "Hello World",
+        X: 100,
+        Y: 100,
+      })}
+  >
+    Add Text
+  </div>
+  <div
+    class="btn"
+    style="margin: 10px;"
+    on:click={() =>
+      ($imgSrcStore.text = {
+        ...$imgSrcStore.text,
+        hidden: true,
+      })}
+  >
+    Remove Text
+  </div>
 </main>
 
 <style>
@@ -80,7 +103,7 @@
     align-items: center;
     justify-content: center;
     width: fit-content;
-    margin: 15px;
+    margin: 10px;
   }
   @media screen and (max-width: 750px) {
     .container__action {

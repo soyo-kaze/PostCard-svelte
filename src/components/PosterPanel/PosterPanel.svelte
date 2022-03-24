@@ -1,13 +1,46 @@
 <script lang="ts">
-  import { fly } from "svelte/transition";
+  import { fly, fade } from "svelte/transition";
   import { handleCard, handleUpload } from "./PosterPanel";
-  import { imgSrcStore, postCardStore } from "../../store";
+  import { imgProp, imgSrcStore, postCardStore } from "../../store";
 
   let imgSrc = $imgSrcStore;
   let postCards = $postCardStore;
+  let grapHidden = true;
+
+  function handleEdit(e: Event) {
+    let { target } = e;
+    $imgSrcStore.text.data = (target as HTMLDivElement).innerText;
+  }
+
+  const mouseMove = (e: MouseEvent) => {
+    $imgSrcStore.text.X = e.offsetX;
+    $imgSrcStore.text.Y = e.offsetY;
+  };
+
+  function handleMove(e: Event) {
+    document.body.addEventListener("mouseup", () =>
+      document
+        .querySelector(".post__card")
+        .removeEventListener("mousemove", mouseMove)
+    );
+    document
+      .querySelector(".post__card")
+      .addEventListener("mousemove", mouseMove);
+  }
 
   $: {
     imgSrc = $imgSrcStore;
+    postCardStore.update((e) =>
+      e.map((element: imgProp) =>
+        element.key === imgSrc.key
+          ? {
+              ...element,
+              text: { ...imgSrc.text },
+            }
+          : element
+      )
+    );
+    console.log("hello");
   }
   $: {
     postCards = $postCardStore;
@@ -18,12 +51,35 @@
   {#key imgSrc.key}
     <div
       class="post__card"
-      in:fly={{ y: -200, delay: 300 }}
-      out:fly={{ y: 200, duration: 300 }}
+      in:fly={{ x: -200, delay: 300 }}
+      out:fly={{ x: 200, duration: 300 }}
     >
       <div
         style={`rotate:${imgSrc.rotate}deg;scale:${imgSrc.scale};transition-duration:300ms`}
       >
+        <div
+          class="post__text"
+          hidden={imgSrc.text === undefined ? true : imgSrc.text.hidden}
+          style={`top:${
+            imgSrc.text === undefined ? "" : imgSrc.text.Y
+          }px;left:${imgSrc.text === undefined ? "" : imgSrc.text.X}px`}
+          on:mouseover={() => (grapHidden = false)}
+          on:focus={() => (grapHidden = false)}
+          on:mouseleave={() => (grapHidden = true)}
+        >
+          <div
+            style="width: 10px;height:10px;background-color:black;cursor:grab"
+            hidden={grapHidden}
+            on:mousedown={handleMove}
+            on:mouseup={() =>
+              document
+                .querySelector(".post__card")
+                .removeEventListener("mousemove", mouseMove)}
+          />
+          <div on:input={handleEdit} contenteditable="true">
+            {imgSrc.text === undefined ? "" : imgSrc.text.data}
+          </div>
+        </div>
         <img src={imgSrc.imgSrc} alt="PostCard" />
       </div>
     </div>
@@ -42,13 +98,16 @@
       />
     {/each}
   </div>
+  <!-- <a id="download" download="template.jpg" href={dataUrl}>
+    <button disabled={dataUrl === "" ? true : false}>Download</button>
+  </a> -->
 </main>
 
 <style>
   .container__poster {
     border-radius: 30px;
     display: flex;
-    justify-content: center;
+    justify-content: end;
     flex-direction: column;
     align-items: center;
     margin: 0px 20px 0px 20px;
@@ -60,7 +119,7 @@
   }
   .post__card {
     margin: 10px;
-    height: 100%;
+    height: 400px;
     width: 100%;
     overflow: hidden;
     border-radius: 20px;
@@ -73,6 +132,7 @@
     border-radius: 20px;
     max-width: 600px;
     width: 100%;
+    overflow: hidden;
   }
   .add__cards {
     padding: 20px 0px 10px 0px;
@@ -94,6 +154,16 @@
   .active {
     opacity: 1;
     max-width: 120px;
+  }
+  .post__text {
+    padding: 10px 10px 0px 10px;
+    width: fit-content;
+    border: 1px solid gray;
+    border-radius: 10px;
+    background-color: white;
+    position: relative;
+    max-width: 600px;
+    z-index: 20;
   }
   @media screen and (max-width: 750px) {
     .container__poster {

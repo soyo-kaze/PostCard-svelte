@@ -45,3 +45,7 @@ export const rotatePoster = (key: any, rotation: number) => {
     return { ...value, rotate: (value.rotate + rotation) % 360 };
   });
 };
+
+export const undo = (state: imgProp) => {
+  imgSrcStore.set(state);
+};
