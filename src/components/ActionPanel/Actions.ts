@@ -18,11 +18,11 @@ export const scalePoster = (key: any, scale: number) => {
     postCardStore.update((e) =>
       e.map((element: imgProp) =>
         element.key === key
-          ? { ...element, scale: element.scale + scale }
+          ? { ...element, scale: element.scale + scale, undoStack: element }
           : element
       )
     );
-    return { ...value, scale: value.scale + scale };
+    return { ...value, scale: value.scale + scale, undoStack: value };
   });
 };
 
@@ -38,14 +38,26 @@ export const rotatePoster = (key: any, rotation: number) => {
     postCardStore.update((e) =>
       e.map((element: imgProp) =>
         element.key === key
-          ? { ...element, rotate: (element.rotate + rotation) % 360 }
+          ? {
+              ...element,
+              rotate: (element.rotate + rotation) % 360,
+              undoStack: element,
+            }
           : element
       )
     );
-    return { ...value, rotate: (value.rotate + rotation) % 360 };
+    return {
+      ...value,
+      rotate: (value.rotate + rotation) % 360,
+      undoStack: value,
+    };
   });
 };
 
-export const undo = (state: imgProp) => {
-  imgSrcStore.set(state);
+export const undo = () => {
+  imgSrcStore.update((state) => ({ ...state.undoStack, redoStack: state }));
+};
+
+export const redo = () => {
+  imgSrcStore.update((state) => ({ ...state.redoStack, undoStack: state }));
 };

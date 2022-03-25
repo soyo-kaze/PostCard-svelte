@@ -12,8 +12,8 @@ export interface imgProp {
     X?: number;
     Y?: number;
   };
-  undoStack?: Array<imgProp>;
-  redoStack?: Array<imgProp>;
+  undoStack?: imgProp;
+  redoStack?: imgProp;
 }
 
 let key = Symbol();
@@ -29,8 +29,6 @@ export const switchCardInitialValue: imgProp = {
     X: 100,
     Y: 100,
   },
-  undoStack: [],
-  redoStack: [],
 };
 
 let postCards: Array<imgProp> = [switchCardInitialValue];

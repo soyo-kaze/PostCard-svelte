@@ -2,7 +2,7 @@
   import { imgProp, imgSrcStore, postCardStore } from "../../store";
   import { handleUpload } from "../PosterPanel/PosterPanel";
   import ActionButton from "./ActionButton.svelte";
-  import { rotatePoster, scalePoster, undo } from "./Actions";
+  import { redo, rotatePoster, scalePoster, undo } from "./Actions";
 
   /**
    * This function is to invoke `input[type=file]` tag since it's hidden behind the
@@ -48,27 +48,43 @@
   <div
     class="btn"
     style="margin: 10px;"
-    on:click={() =>
-      ($imgSrcStore.text = {
+    on:click={() => {
+      $imgSrcStore.text = {
         hidden: false,
         data: "Hello World",
         X: 100,
         Y: 100,
-      })}
+      };
+    }}
   >
     Add Text
   </div>
   <div
     class="btn"
     style="margin: 10px;"
-    on:click={() =>
-      ($imgSrcStore.text = {
+    on:click={() => {
+      $imgSrcStore.text = {
         ...$imgSrcStore.text,
         hidden: true,
-      })}
+      };
+    }}
   >
     Remove Text
   </div>
+  <button
+    class="btn"
+    on:click={undo}
+    disabled={$imgSrcStore.undoStack === undefined ? true : false}
+  >
+    undo
+  </button>
+  <button
+    class="btn"
+    on:click={redo}
+    disabled={$imgSrcStore.redoStack === undefined ? true : false}
+  >
+    redo
+  </button>
 </main>
 
 <style>
@@ -94,6 +110,10 @@
     transition: all 0.5s;
     cursor: pointer;
   }
+  .btn:hover {
+    transition-duration: 300ms;
+    background-color: #3aaf16;
+  }
   input[type="file"] {
     position: absolute;
     z-index: -1;
@@ -104,6 +124,9 @@
     justify-content: center;
     width: fit-content;
     margin: 10px;
+  }
+  .btn:disabled {
+    background-color: #71ac5f;
   }
   @media screen and (max-width: 750px) {
     .container__action {

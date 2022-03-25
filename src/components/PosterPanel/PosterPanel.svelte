@@ -9,7 +9,15 @@
 
   function handleEdit(e: Event) {
     let { target } = e;
-    $imgSrcStore.text.data = (target as HTMLDivElement).innerText;
+    imgSrcStore.update((value) => ({
+      ...value,
+      text: {
+        ...value.text,
+        text: (target as HTMLDivElement).innerText,
+      },
+      undoStack: value,
+    }));
+    // $imgSrcStore.text.data = (target as HTMLDivElement).innerText;
   }
 
   const mouseMove = (e: MouseEvent) => {
@@ -30,17 +38,19 @@
 
   $: {
     imgSrc = $imgSrcStore;
-    postCardStore.update((e) =>
-      e.map((element: imgProp) =>
-        element.key === imgSrc.key
-          ? {
-              ...element,
-              text: { ...imgSrc.text },
-            }
-          : element
-      )
-    );
-    console.log("hello");
+    if (imgSrc.text) {
+      postCardStore.update((e) =>
+        e.map((element: imgProp) =>
+          element.key === imgSrc.key
+            ? {
+                ...element,
+                text: { ...imgSrc.text },
+              }
+            : element
+        )
+      );
+    }
+    console.log(imgSrc.undoStack);
   }
   $: {
     postCards = $postCardStore;
