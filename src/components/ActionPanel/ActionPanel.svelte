@@ -2,7 +2,14 @@
   import { imgProp, imgSrcStore, postCardStore } from "../../store";
   import { handleUpload } from "../PosterPanel/PosterPanel";
   import ActionButton from "./ActionButton.svelte";
-  import { redo, rotatePoster, scalePoster, undo } from "./Actions";
+  import {
+    addText,
+    redo,
+    removeText,
+    rotatePoster,
+    scalePoster,
+    undo,
+  } from "./Actions";
 
   /**
    * This function is to invoke `input[type=file]` tag since it's hidden behind the
@@ -45,32 +52,8 @@
     action={rotatePoster}
     key={$imgSrcStore.key}
   />
-  <div
-    class="btn"
-    style="margin: 10px;"
-    on:click={() => {
-      $imgSrcStore.text = {
-        hidden: false,
-        data: "Hello World",
-        X: 100,
-        Y: 100,
-      };
-    }}
-  >
-    Add Text
-  </div>
-  <div
-    class="btn"
-    style="margin: 10px;"
-    on:click={() => {
-      $imgSrcStore.text = {
-        ...$imgSrcStore.text,
-        hidden: true,
-      };
-    }}
-  >
-    Remove Text
-  </div>
+  <div class="btn" style="margin: 10px;" on:click={addText}>Add Text</div>
+  <div class="btn" style="margin: 10px;" on:click={removeText}>Remove Text</div>
   <button
     class="btn"
     on:click={undo}

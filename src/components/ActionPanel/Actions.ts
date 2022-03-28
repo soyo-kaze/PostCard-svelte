@@ -54,10 +54,75 @@ export const rotatePoster = (key: any, rotation: number) => {
   });
 };
 
+/**
+ * @todo Add comments for functions.
+ * @todo Refactor code if needed.
+ */
+
 export const undo = () => {
   imgSrcStore.update((state) => ({ ...state.undoStack, redoStack: state }));
 };
 
 export const redo = () => {
   imgSrcStore.update((state) => ({ ...state.redoStack, undoStack: state }));
+};
+
+export const addText = () => {
+  imgSrcStore.update((value) => {
+    postCardStore.update((e) =>
+      e.map((element: imgProp) =>
+        element.key === value.key
+          ? {
+              ...element,
+              text: {
+                ...element.text,
+                hidden: false,
+                data: "Hello World",
+                X: 100,
+                Y: 100,
+              },
+              undoStack: element,
+            }
+          : element
+      )
+    );
+    return {
+      ...value,
+      text: {
+        ...value.text,
+        hidden: false,
+        data: "Hello World",
+        X: 100,
+        Y: 100,
+      },
+      undoStack: value,
+    };
+  });
+};
+
+export const removeText = () => {
+  imgSrcStore.update((value) => {
+    postCardStore.update((e) =>
+      e.map((element: imgProp) =>
+        element.key === value.key
+          ? {
+              ...element,
+              text: {
+                ...element.text,
+                hidden: true,
+              },
+              undoStack: element,
+            }
+          : element
+      )
+    );
+    return {
+      ...value,
+      text: {
+        ...value.text,
+        hidden: true,
+      },
+      undoStack: value,
+    };
+  });
 };

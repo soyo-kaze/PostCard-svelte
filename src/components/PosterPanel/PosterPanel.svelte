@@ -1,55 +1,15 @@
 <script lang="ts">
-  import { fly, fade } from "svelte/transition";
-  import { handleCard, handleUpload } from "./PosterPanel";
-  import { imgProp, imgSrcStore, postCardStore } from "../../store";
+  import { fly } from "svelte/transition";
+  import { handleCard } from "./PosterPanel";
+  import { handleEdit, handleMove, mouseMove } from "./TextMove";
+  import { imgSrcStore, postCardStore } from "../../store";
 
   let imgSrc = $imgSrcStore;
   let postCards = $postCardStore;
   let grapHidden = true;
 
-  function handleEdit(e: Event) {
-    let { target } = e;
-    imgSrcStore.update((value) => ({
-      ...value,
-      text: {
-        ...value.text,
-        text: (target as HTMLDivElement).innerText,
-      },
-      undoStack: value,
-    }));
-    // $imgSrcStore.text.data = (target as HTMLDivElement).innerText;
-  }
-
-  const mouseMove = (e: MouseEvent) => {
-    $imgSrcStore.text.X = e.offsetX;
-    $imgSrcStore.text.Y = e.offsetY;
-  };
-
-  function handleMove(e: Event) {
-    document.body.addEventListener("mouseup", () =>
-      document
-        .querySelector(".post__card")
-        .removeEventListener("mousemove", mouseMove)
-    );
-    document
-      .querySelector(".post__card")
-      .addEventListener("mousemove", mouseMove);
-  }
-
   $: {
     imgSrc = $imgSrcStore;
-    if (imgSrc.text) {
-      postCardStore.update((e) =>
-        e.map((element: imgProp) =>
-          element.key === imgSrc.key
-            ? {
-                ...element,
-                text: { ...imgSrc.text },
-              }
-            : element
-        )
-      );
-    }
     console.log(imgSrc.undoStack);
   }
   $: {
@@ -129,7 +89,7 @@
   }
   .post__card {
     margin: 10px;
-    height: 400px;
+    height: 100%;
     width: 100%;
     overflow: hidden;
     border-radius: 20px;
@@ -168,12 +128,17 @@
   .post__text {
     padding: 10px 10px 0px 10px;
     width: fit-content;
-    border: 1px solid gray;
-    border-radius: 10px;
-    background-color: white;
     position: relative;
     max-width: 600px;
     z-index: 20;
+    color: white;
+    border-radius: 10px;
+  }
+  .post__text:hover {
+    transition-duration: 300ms;
+    border: 1px solid gray;
+    background-color: white;
+    color: black;
   }
   @media screen and (max-width: 750px) {
     .container__poster {
