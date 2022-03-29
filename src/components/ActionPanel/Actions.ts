@@ -59,13 +59,54 @@ export const rotatePoster = (key: any, rotation: number) => {
  * @todo Refactor code if needed.
  */
 
+/**
+ * Used to implement undo functionality by tracking immediate states before and after change, it loads the state that
+ * is stored in undoStack property of the state and saves the current state to redoStack property.
+ * @summary This function tracks the immediate last state and assign it to the undoStack property of the postcards state
+ */
+
 export const undo = () => {
-  imgSrcStore.update((state) => ({ ...state.undoStack, redoStack: state }));
+  imgSrcStore.update((state) => {
+    postCardStore.update((e) =>
+      e.map((element: imgProp) =>
+        element.key === state.key
+          ? {
+              ...element.undoStack,
+              redoStack: element,
+            }
+          : element
+      )
+    );
+    return { ...state.undoStack, redoStack: state };
+  });
 };
 
+/**
+ * It does exactly what undo function does but instead of loading from undoStack and saving in
+ * redoStack it does exactly the opposite it loads state from redoStack and saves the current state
+ * to undoStack. And that folks how we do undo/redo without tracking a stack.
+ * @summary Similar to undo function but instead it tracks the state before the undo that is redo
+ */
 export const redo = () => {
-  imgSrcStore.update((state) => ({ ...state.redoStack, undoStack: state }));
+  imgSrcStore.update((state) => {
+    postCardStore.update((e) =>
+      e.map((element: imgProp) =>
+        element.key === state.key
+          ? {
+              ...element.redoStack,
+              undoStack: element,
+            }
+          : element
+      )
+    );
+    return { ...state.redoStack, undoStack: state };
+  });
 };
+
+/**
+ * It negates the hidden property of the text property that targets the movable text component
+ * on the postcard and add some boilerplate-ish properties
+ */
 
 export const addText = () => {
   imgSrcStore.update((value) => {
@@ -99,6 +140,10 @@ export const addText = () => {
     };
   });
 };
+
+/**
+ * Hides the movable text component by making the hidden property true
+ */
 
 export const removeText = () => {
   imgSrcStore.update((value) => {
