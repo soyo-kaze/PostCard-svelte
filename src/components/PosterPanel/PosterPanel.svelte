@@ -3,6 +3,7 @@
   import { handleCard } from "./PosterPanel";
   import { handleEdit, handleMove, mouseMove } from "./TextMove";
   import { imgSrcStore, postCardStore } from "../../store";
+  import { handleDownload } from "./ImageGen";
 
   let imgSrc = $imgSrcStore;
   let postCards = $postCardStore;
@@ -10,7 +11,6 @@
 
   $: {
     imgSrc = $imgSrcStore;
-    console.log(imgSrc.undoStack);
   }
   $: {
     postCards = $postCardStore;
@@ -25,6 +25,7 @@
       out:fly={{ x: 200, duration: 300 }}
     >
       <div
+        id="card__image"
         style={`rotate:${imgSrc.rotate}deg;scale:${imgSrc.scale};transition-duration:300ms`}
       >
         <div
@@ -68,9 +69,10 @@
       />
     {/each}
   </div>
-  <!-- <a id="download" download="template.jpg" href={dataUrl}>
-    <button disabled={dataUrl === "" ? true : false}>Download</button>
-  </a> -->
+  <!--Download Button-->
+  <!-- svelte-ignore a11y-missing-content -->
+  <a id="download" download="template.jpg" />
+  <button class="btn" on:click={handleDownload}>Download</button>
 </main>
 
 <style>
@@ -139,6 +141,10 @@
     border: 1px solid gray;
     background-color: white;
     color: black;
+  }
+  #card__image {
+    height: fit-content;
+    width: fit-content;
   }
   @media screen and (max-width: 750px) {
     .container__poster {

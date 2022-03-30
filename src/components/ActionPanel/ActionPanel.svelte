@@ -82,7 +82,7 @@
     background-color: rgba(135, 247, 210, 0.694);
     border-radius: 10px;
   }
-  .btn {
+  :global(.btn) {
     background-color: #4dac30;
     border-radius: 10px;
     color: #ffffff;
