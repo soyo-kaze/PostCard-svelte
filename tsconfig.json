@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/svelte/tsconfig.json",
+  "extends": "./node_modules/@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
   "module": "esnext",
   "outDir": "./build",
@@ -7,7 +7,8 @@
   "pretty": true,
   "forceConsistentCasingInFileNames": true,
   "noEmitOnError": true,
+  "skipLibCheck": false,
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/__tests__/App.test.ts", "__tests__"],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
 }
