@@ -26,10 +26,12 @@
     >
       <div
         id="card__image"
+        data-testid="post__card"
         style={`rotate:${imgSrc.rotate}deg;scale:${imgSrc.scale};transition-duration:300ms`}
       >
         <div
           class="post__text"
+          data-testid="text"
           hidden={imgSrc.text === undefined ? true : imgSrc.text.hidden}
           style={`top:${
             imgSrc.text === undefined ? "" : imgSrc.text.Y

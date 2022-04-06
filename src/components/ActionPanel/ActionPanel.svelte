@@ -40,6 +40,7 @@
     scales={{ up: 0.25, down: -0.25 }}
     action={scalePoster}
     key={$imgSrcStore.key}
+    testId={{ left: "scale__down", right: "scale__up" }}
   />
 
   <!--
@@ -51,9 +52,24 @@
     scales={{ up: 90, down: -90 }}
     action={rotatePoster}
     key={$imgSrcStore.key}
+    testId={{ left: "rotate__left", right: "rotate__right" }}
   />
-  <div class="btn" style="margin: 10px;" on:click={addText}>Add Text</div>
-  <div class="btn" style="margin: 10px;" on:click={removeText}>Remove Text</div>
+  <div
+    class="btn"
+    style="margin: 10px;"
+    data-testid="add__text"
+    on:click={addText}
+  >
+    Add Text
+  </div>
+  <div
+    class="btn"
+    style="margin: 10px;"
+    data-testid="remove__text"
+    on:click={removeText}
+  >
+    Remove Text
+  </div>
   <button
     class="btn"
     on:click={undo}

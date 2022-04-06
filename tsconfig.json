@@ -3,7 +3,6 @@
   "compilerOptions": {
   "module": "esnext",
   "outDir": "./build",
-  // "outFile": "./build/index.js",
   "pretty": true,
   "forceConsistentCasingInFileNames": true,
   "noEmitOnError": true,

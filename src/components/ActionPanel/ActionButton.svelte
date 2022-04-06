@@ -4,17 +4,26 @@
   export let key: any;
   export let scales: { up: number; down: number };
   export let action: (key: any, scale: number) => void;
+  export let testId: { left: string; right: string };
 </script>
 
 <main>
   <div class="button__wrap">
-    <div class="button left" on:click={() => action(key, scales.down)}>
+    <div
+      class="button left"
+      on:click={() => action(key, scales.down)}
+      data-testid={testId.left}
+    >
       {icons.left}
     </div>
     <div class="value">
       {scales.up < 1 && scales.down > -1 ? `x ${value}` : `${value}°deg`}
     </div>
-    <div class="button right" on:click={() => action(key, scales.up)}>
+    <div
+      class="button right"
+      on:click={() => action(key, scales.up)}
+      data-testid={testId.right}
+    >
       {icons.right}
     </div>
   </div>
