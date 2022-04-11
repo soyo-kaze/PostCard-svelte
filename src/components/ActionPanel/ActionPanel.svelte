@@ -126,6 +126,7 @@
   }
   .btn:disabled {
     background-color: #71ac5f;
+    color: rgb(213, 213, 213);
   }
   @media screen and (max-width: 750px) {
     .container__action {

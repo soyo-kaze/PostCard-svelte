@@ -22,29 +22,25 @@ export const handleUpload = (e: Event): void => {
 
   if (file) {
     const reader = new FileReader();
-    reader.addEventListener(
-      "load",
-      function () {
-        // Convert image file to base64 string
-        let imgBase64 = reader.result;
-        let imgSrcInner = imgBase64 as string;
+    reader.addEventListener("load", function () {
+      // Convert image file to base64 string
+      let imgBase64 = reader.result;
+      let imgSrcInner = imgBase64 as string;
 
-        let key = Symbol();
+      let key = Symbol();
 
-        // Add multiple images to postCards array
-        postCardStore.update((e) => [
-          ...e,
-          {
-            imgSrc: imgSrcInner,
-            rotate: 0,
-            scale: 1,
-            key,
-            active: false,
-          },
-        ]);
-      },
-      false
-    );
+      // Add multiple images to postCards array
+      postCardStore.update((e) => [
+        ...e,
+        {
+          imgSrc: imgSrcInner,
+          rotate: 0,
+          scale: 1,
+          key,
+          active: false,
+        },
+      ]);
+    });
     reader.readAsDataURL(file);
   }
 };
